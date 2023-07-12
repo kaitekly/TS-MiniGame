@@ -250,7 +250,7 @@ text3 = font.render('good luck finding the titanic :)',True,(255,255,255))
 text4 = font.render('~made by kajetk~',True,(255,255,255))
 while in_menu:
     stop_run_time = 0
-    score = 0
+    main.score = 0
     file = open("hiscore.txt", "r")
     hiscore = file.readline()
     hiscore = int(hiscore)
@@ -316,7 +316,7 @@ while in_menu:
             main.screen.blit(died,(0,0))
             clock.tick(FPS)
             pygame.display.flip()
-            if score>hiscore:
+            if main.score>hiscore:
                 file = open('hiscore.txt','w')
                 file.write(str(main.score))
                 file.close
