@@ -12,6 +12,7 @@ class Main():
         self.SCREEN_SIZE = 1080,720
         self.screen = pygame.display.set_mode(self.SCREEN_SIZE)
         self.BLACK = (0,0,0)
+        self.score = 0
 
         'Background'
         self.image = pygame.image.load('images/Ocean.png')
@@ -128,7 +129,7 @@ class Oxygen_Tanks():
         for i in self.tanks_pos:
             pygame.Surface.blit(main.screen,self.image,i)
 
-    def update(self):
+    def update(self,score):
         for i in self.tanks_pos:
             i[1]-=1
             if i[1]<-100:
@@ -136,10 +137,12 @@ class Oxygen_Tanks():
             if self.image_mask.overlap(sub.image_masks[sub.imagei],(i[0]-sub.pos[0],i[1]-sub.pos[1])):
                 o2_meter.total = o2_meter.max
                 self.tanks_pos.remove(i)
+                score+=100
         if len(self.tanks_pos) < self.max_tanks:
             self.spawn_tank(random.randint(0,main.SCREEN_SIZE[0]))
 
         self.draw()
+        return score
 
 class Controller_minigame():
     def __init__(self):
@@ -184,6 +187,7 @@ class Controller_minigame():
             self.tryconnect_b = False
             self.usb_pos = [0,main.SCREEN_SIZE[1]-200]
             main.iman = 0
+            main.score+=2000
             return False
         elif self.usb_pos[1]<400:
             self.tryconnect_b = False
@@ -229,12 +233,11 @@ class GameEvents():
         self.tick+=1
 
         return self.check_events()
+
 #-=-=--=-=-=-=-=-=-=-=-=-=-=-=-==-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#\
 
 main = Main()
 
-file = open("hiscore.txt", "r")
-hiscore = file.readline()
 
 running = False
 in_menu = True
@@ -246,12 +249,20 @@ text2 = font.render('A,D,SPACE & ESC to leave',True,(255,255,255))
 text3 = font.render('good luck finding the titanic :)',True,(255,255,255))
 text4 = font.render('~made by kajetk~',True,(255,255,255))
 while in_menu:
-    stop_run_time = 120
+    stop_run_time = 0
+    score = 0
+    file = open("hiscore.txt", "r")
+    hiscore = file.readline()
+    hiscore = int(hiscore)
+    file.close()
+    
+    text5 = font.render('hiscore: '+str(hiscore),True,(255,255,255))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             in_menu = False
     keys = pygame.key.get_pressed()
     if keys[pygame.K_SPACE]:
+        stop_run_time = 60
         running=True
         sub = Sub()
         o2_meter = Oxygen_Level()
@@ -264,10 +275,11 @@ while in_menu:
         in_menu = False
     main.draw()
     main.screen.blit(text1,(200,100))
-    main.screen.blit(text2,(200,200))
-    main.screen.blit(text3,(200,300))
-    main.screen.blit(text4,(200,400))
-    while running and stop_run_time>0:
+    main.screen.blit(text2,(200,150))
+    main.screen.blit(text3,(200,200))
+    main.screen.blit(text4,(200,250))
+    main.screen.blit(text5,(450,500))
+    while running or stop_run_time>0:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -276,29 +288,39 @@ while in_menu:
         if keys[pygame.K_ESCAPE]:
             running=False
         ###^EVENTS^###
-
+        main.score+=1
 
         #ENDBE#
         main.draw()
         sub.draw()
-        o2_tanks.update()
+        main.score = o2_tanks.update(main.score)
 
         running = o2_meter.update(running)
 
         
         if reconect:
             reconect = reconect_game.update(keys)
+            main.score+=3
         else:
             sub.move(keys)
             reconect = gameevent.update()
+
+        DrawScore = font.render('score: '+str(main.score),True,(255,255,255))
+        main.screen.blit(DrawScore,(500,50))
         #ENDEL#
         clock.tick(FPS)
         pygame.display.flip()
         if running == False:
+            main.iman = 0
             stop_run_time-=1
             main.screen.blit(died,(0,0))
             clock.tick(FPS)
             pygame.display.flip()
+            if score>hiscore:
+                file = open('hiscore.txt','w')
+                file.write(str(main.score))
+                file.close
+            
             
     clock.tick(FPS)
     pygame.display.flip()
