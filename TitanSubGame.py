@@ -1,6 +1,5 @@
 import pygame
 import random
-import time
 
 '//////////////////////////////'
 pygame.init()
@@ -234,14 +233,19 @@ class GameEvents():
 
 main = Main()
 
+hiscore = 
 
 running = False
 in_menu = True
 
 died = pygame.transform.scale(pygame.image.load('images/died.png'),main.SCREEN_SIZE)
 font = pygame.font.SysFont('lucidasans',30)
-text = font.render('Controls:\nA,D,SPACE\ngood luck finding the titanic :)\n\n~made by kajetk~',True,(255,255,255))
+text1 = font.render('Controls:',True,(255,255,255))
+text2 = font.render('A,D,SPACE',True,(255,255,255))
+text3 = font.render('good luck finding the titanic :)',True,(255,255,255))
+text4 = font.render('~made by kajetk~',True,(255,255,255))
 while in_menu:
+    stop_run_time = 120
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             in_menu = False
@@ -258,8 +262,11 @@ while in_menu:
     if keys[pygame.K_ESCAPE]:
         in_menu = False
     main.draw()
-    main.screen.blit(text,(200,100))
-    while running:
+    main.screen.blit(text1,(200,100))
+    main.screen.blit(text2,(200,200))
+    main.screen.blit(text3,(200,300))
+    main.screen.blit(text4,(200,400))
+    while running and stop_run_time>0:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -287,10 +294,11 @@ while in_menu:
         clock.tick(FPS)
         pygame.display.flip()
         if running == False:
+            stop_run_time-=1
             main.screen.blit(died,(0,0))
             clock.tick(FPS)
             pygame.display.flip()
-            time.sleep(3)
+            
     clock.tick(FPS)
     pygame.display.flip()
 pygame.quit()
