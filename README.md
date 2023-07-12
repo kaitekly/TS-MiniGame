@@ -8,7 +8,7 @@ may have bugs which i didnt find. just ignore as im unlikely to fix rn;
 not meant to offend anyone, this is made as a joke. ;
 thanks for playing my game :) ;
 
--added score & hiscore that saves\n
+-added score & hiscore that saves
 -fixed screen glitch at death
 -removed time.sleep() modules
 -fixed incorrectly printed text at menu
