@@ -233,7 +233,8 @@ class GameEvents():
 
 main = Main()
 
-hiscore = 
+file = open("hiscore.txt", "r")
+hiscore = file.readline()
 
 running = False
 in_menu = True
@@ -241,7 +242,7 @@ in_menu = True
 died = pygame.transform.scale(pygame.image.load('images/died.png'),main.SCREEN_SIZE)
 font = pygame.font.SysFont('lucidasans',30)
 text1 = font.render('Controls:',True,(255,255,255))
-text2 = font.render('A,D,SPACE',True,(255,255,255))
+text2 = font.render('A,D,SPACE & ESC to leave',True,(255,255,255))
 text3 = font.render('good luck finding the titanic :)',True,(255,255,255))
 text4 = font.render('~made by kajetk~',True,(255,255,255))
 while in_menu:
