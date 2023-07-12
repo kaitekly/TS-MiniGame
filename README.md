@@ -1,4 +1,4 @@
-# TS-MiniGame;
+(updated-) # TS-MiniGame;
 files for titan sub minigame I made;
 this is more like a shitty demo or minigame than acctual game on its own;
 made in like 3 hours for fun;
@@ -7,3 +7,8 @@ and space to start;
 may have bugs which i didnt find. just ignore as im unlikely to fix rn;
 not meant to offend anyone, this is made as a joke. ;
 thanks for playing my game :) ;
+
+-added score & hiscore that saves
+-fixed screen glitch at death
+-removed time.sleep() modules
+-fixed incorrectly printed text at menu
